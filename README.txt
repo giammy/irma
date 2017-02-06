@@ -1,30 +1,25 @@
 
-TODO
-
-home - aggiungere logout
-
-
-
 Progetto IRMA
 https://github.com/giammy/irma
 
-*** 20170202 
 
-mirko.romanato@posteo.net
+TODO
 
-DOMANDE:
-- nella tabella prestito serve un campo utente (l'utente che ha preso il prestito)?
-- quanti utenti ci sono (come ordine di grandezza?) 200
-- quanti prestiti ci sono in corso (sempre indicativamente?) (~30)
+- gestire logout???
+- esportare /vedi/prestiti/id e /vedi/prestiti/tutti in CSV
 
 
-Specifiche 
+*** Software gestione prestiti
+- circa 200 utenti
+- circa 30 prestiti in corso
+
+*** Struttura dati
 
 Tabella Prestiti: 
 integer     id
 string255   protocollo                # Numero di protocollo
 string255   titolo1                   # Titolo libro
-string255   collocazione              # Collocazione 
+string255   collocazione              # Collocazione FORZARE FORMATO "DON.F.924"
 string255   titolo2                   # Titolo libro II
 datetime    dataPrestito              # data prestito
 datetime    dataRestituzione          # data restituzione - null indica NON RESTITUITO
@@ -52,7 +47,7 @@ string255   emessoDa        #
 string255   numeroDocumento # e suo codice, CI22424 / 21313421LT
 
 
-Pagine:
+*** Struttura pagine:
 
 Logica dell'applicazione:
 il bibliotecario entra autenticandosi (registrazione dei bibliotecari fatta a mano)
@@ -75,7 +70,7 @@ RESTITUZIONE PRESTITO
 - qui c'e' un bottone "PROLUNGA PRESTITO" e un bottone "RESTITUISCI PRESTITO"
 
 
-Schermate:
+*** Pagine:
 
 /
 homepage, con link per
@@ -101,7 +96,7 @@ ciascuna di queste pagine serve a creare o editare prestito o utente
 /mostra/utenti/username
 
 
-Esportare /vedi/prestiti/id e /vedi/prestiti/tutti in CSV
+*** Installazione
 
 Installare su Apache - file di configurazione /etc/apache2/apache2.conf
 
@@ -127,13 +122,11 @@ Installare su Apache - file di configurazione /etc/apache2/apache2.conf
 </VirtualHost>
 
 
-Installazione
-Apache
-Php
+Pacchetti necessari (alcuni):
+apache
+php
 symfony
-apt-get install php-xml sqlite
-sudo apt-get install php7.0-sqlite3
-
+sudo apt-get install php-xml sqlite php7.0-sqlite3
 
 
 inizializzazione Repository:
