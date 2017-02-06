@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+Elenco prestiti.
+
+<br>
+
+<table id="tabellaprestiti">
+  <thead>
+    <tr>
+      <td>Protocollo</td>
+      <td>Titolo1</td>
+      <td>Titolo2</td>
+      <td>Collocazione</td>
+      <td>Data Prestito</td>
+      <td>Data Restituzione</td>
+      <td>Richiesta Proroga</td>
+      <td>Note</td>
+      <td>Utente</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for prestito in prestiti %}
+    <tr>
+      <td> {{ prestito.protocollo }} </td>
+      <td> {{ prestito.titolo1 }} </td>
+      <td> {{ prestito.titolo2 }} </td>
+      <td> {{ prestito.collocazione }} </td>
+      <td> {{ prestito.dataPrestito|date('d/m/Y') }} </td>
+      <td> {{ prestito.dataRestituzione|date('d/m/Y') }} </td>
+      <td> {{ prestito.richiestaProroga }} </td>
+      <td> {{ prestito.note }} </td>
+      <td> <a href ="{{ path('editutente', {'username': prestito.utente }) }}"> {{ prestito.utente }} </a> </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% endblock %}
