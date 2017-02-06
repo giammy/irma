@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8" />
+      <title>{% block title %}Welcome!{% endblock %}</title>
+      {% block stylesheets %}{% endblock %}
+      <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+      <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css">
+      <link rel="stylesheet" type="text/css" href="{{ asset('Datatables/datatables.min.css') }}"/>
+      <script type="text/javascript" src="{{ asset('js/jquery-3.1.0.min.js') }}"></script>
+      <script type="text/javascript" src="{{ asset('Datatables/datatables.min.js') }}"></script>
+      <script>
+      // initialization and configuration
+      $(document).ready( function () {
+          $('#tabellautenti').dataTable( {
+              "fixedHeader": true,
+              "lengthMenu": [ 500, 200, 100, 75, 50, 25, 10, 1000 ]
+              //"info":     false, // remove header and footer
+              //"ordering": false,
+              //"bPaginate": false,
+              //"sDom": 'T<"clear">lfrtip'
+        } ); // end dataTable
+      } ); // end ready function
+      // END initialization and configuration
+      </script>
+
+    </head>
+    <body>
+      <h2>
+	<a href="{{ path('homepage') }}"">LOGO IRMA</a> 
+        <p>
+        <!-- <a href="{{ path('homepage') }}" class="button" style="width:23%">INIZIO</a> --> 
+      </h2>
+      <div style="text-align: right">
+	Logout
+      </div>
+      <hr>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+      <hr>
+      <center>
+        IRMA - Indice Restituzioni Materiale A
+	</center>
+    </body>
+</html>

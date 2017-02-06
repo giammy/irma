@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<a href="{{ path('editutente') }}" class="button" style="width:23%">Crea nuovo utente</a>
+
+Elenco Utenti: scrivi nella casella SEARCH a destra il nome o il cognome dell'utente cercato.
+Se l'utente non c'e' creane uno di nuovo.
+
+<br>
+
+<table id="tabellautenti">
+  <thead>
+    <tr>
+      <td>Cognome</td>
+      <td>Nome</td>
+      <td>Email</td>
+      <td>Cellulare</td>
+      <td>Residenza</td>
+      <td>Consenso</td>
+      <td>Tipo documento</td>
+      <td>Emesso da</td>
+      <td>Numero documento</td>
+<!--
+      <td>Username</td>
+      <td>Ruolo</td>
+      <td>Creato da</td>
+      <td>Creato il</td>
+-->
+    </tr>
+  </thead>
+  <tbody>
+    {% for utente in utenti %}
+    <tr>
+      <td> <a href =" {{ path('editutente', {'username': utente.username }) }} "> {{ utente.cognome }} </a> </td>
+      <td><a href =" {{ path('editutente', {'username': utente.username }) }} "> {{ utente.nome }} </a></td>
+      <td> {{ utente.email }} </td>
+      <td> {{ utente.cellulare }} </td>
+      <td> {{ utente.residenza }} </td>
+      <td> {{ utente.consenso }} </td>
+      <td> {{ utente.tipoDocumento }} </td>
+      <td> {{ utente.emessoDa }} </td>
+      <td> {{ utente.numeroDocumento }} </td>
+<!--
+      <td> <a href =" {{ path('editutente', {'username': utente.username }) }} "> {{ utente.username }} </a></td>
+      <td> {{ utente.ruolo }} </td>
+      <td> {{ utente.bibliotecario }} </td>
+      <td> {{ utente.dataIscrizione|date("d/m/Y") }} </td>
+-->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% endblock %}

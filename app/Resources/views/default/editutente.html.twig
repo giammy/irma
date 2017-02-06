@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{{ form_start(form) }}
+
+<table>
+  <tr>
+    <td> Cognome: </td>
+    <td> {{ form_widget(attribute(form, "cognome"), { 'value': utente.cognome, 'attr': {'size': '60'} }) }} </td>  </tr>
+  <tr>
+    <td> Nome: </td>
+    <td>{{ form_widget(attribute(form, "nome"), { 'value': utente.nome, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Cellulare: </td>
+    <td>{{ form_widget(attribute(form, "cellulare"), { 'value': utente.cellulare, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Email: </td>
+    <td>{{ form_widget(attribute(form, "email"), { 'value': utente.email, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Residenza: </td>
+    <td>{{ form_widget(attribute(form, "residenza"), { 'value': utente.residenza, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Consenso: </td>
+    <td>{{ form_widget(attribute(form, "consenso"), { 'value': utente.consenso, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Tipo Documento: </td>
+    <td>{{ form_widget(attribute(form, "tipoDocumento"), { 'value': utente.tipoDocumento, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Emesso da: </td>
+    <td>{{ form_widget(attribute(form, "emessoDa"), { 'value': utente.emessoDa, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Numero documento: </td>
+    <td>{{ form_widget(attribute(form, "numeroDocumento"), { 'value': utente.numeroDocumento, 'attr': {'size': '60'} }) }} </td>
+  </tr>
+
+</table>
+
+<input type="submit" value="SALVA" class='button' style='width: 23%; font-size: 20px;'/>
+
+{% if utente.username is null %}
+{% else %}
+<a href="{{ path('eliminautente', {'username': utente.username }) }}" class="button" style="width:23%" onclick="return confirm('Sei sicuro di voler eliminare questo utente?')">Elimina utente</a> 
+{% endif %}
+
+{{ form_end(form) }}
+
+{% endblock %}

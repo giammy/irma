@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+Pagina Principale
+
+<ul>
+  <li> <a href="{{ path('editutente') }}" class="button" style="width:23%">Nuovo utente</a> </li>
+  <li> <a href="{{ path('mostrautente') }}" class="button" style="width:23%">Lista utenti</a> </li>
+</ul>
+
+<hr><hr><hr><b>ANCORA DA FARE</b>
+
+<ul>
+
+<li> <a href="{{ path('homepage') }}" class="button" style="width:23%">NUOVO PRESTITO</a> </li>
+
+<li> <a href="{{ path('homepage') }}" class="button" style="width:23%">PROLUNGA PRESTITO</a> </li>
+
+</ul>
+
+<hr>
+
+<ul>
+    <li> <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista utenti con materiale in prestito</a> </li>
+</ul>
+
+<ul>
+  <li> <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista tutti prestiti</a> </li>
+    <li> <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista prestiti da restituire</a> </li>
+</ul>
+
+{% endblock %}
