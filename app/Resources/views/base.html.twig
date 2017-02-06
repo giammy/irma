@@ -26,14 +26,21 @@
 
     </head>
     <body>
-      <h2>
-	<a href="{{ path('homepage') }}"">LOGO IRMA</a> 
-        <p>
+     <a href="{{ path('homepage') }}">
+       <img src="{{ asset('images/logo-irma.png') }}"
+           alt="Logo IRMA"
+           height="80" width="165"
+           style="margin-left:20px;margin-right:20px;margin-top:20px;margin-bottom:20px;float:left">
+        </a>
+
+     <div style="clear:both"></div>
+
         <!-- <a href="{{ path('homepage') }}" class="button" style="width:23%">INIZIO</a> --> 
-      </h2>
+      <!--
       <div style="text-align: right">
-	Logout
+	<a href="{{ logout_path('main') }}">Logout</a>
       </div>
+      -->
       <hr>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}

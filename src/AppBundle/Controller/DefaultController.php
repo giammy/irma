@@ -124,6 +124,12 @@ class DefaultController extends Controller
     }
 
 
+   /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction(Request $request) {
+        return $this->redirect($this->generateUrl('homepage'));
+    }
 
 
 }
