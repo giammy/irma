@@ -10,6 +10,7 @@
       <script type="text/javascript" src="{{ asset('js/jquery-3.1.0.min.js') }}"></script>
       <script type="text/javascript" src="{{ asset('Datatables/datatables.min.js') }}"></script>
       <script>
+
       // initialization and configuration
       $(document).ready( function () {
           $('#tabellautenti').dataTable( {
@@ -22,6 +23,20 @@
         } ); // end dataTable
       } ); // end ready function
       // END initialization and configuration
+
+      // initialization and configuration
+      $(document).ready( function () {
+          $('#tabellaprestiti').dataTable( {
+              "fixedHeader": true,
+              "lengthMenu": [ 500, 200, 100, 75, 50, 25, 10, 1000 ]
+              //"info":     false, // remove header and footer
+              //"ordering": false,
+              //"bPaginate": false,
+              //"sDom": 'T<"clear">lfrtip'
+        } ); // end dataTable
+      } ); // end ready function
+      // END initialization and configuration
+
       </script>
 
     </head>
@@ -46,7 +61,7 @@
         {% block javascripts %}{% endblock %}
       <hr>
       <center>
-        IRMA - Indice Restituzioni Materiale A
+        IRMA - Indice Restituzioni Materiale Allocato
 	</center>
     </body>
 </html>

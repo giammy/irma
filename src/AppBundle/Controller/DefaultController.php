@@ -124,6 +124,84 @@ class DefaultController extends Controller
     }
 
 
+
+
+    /**
+     * @Route("/mostra/prestito/{idprestito}", name="mostraprestito", defaults={"idprestito"="T.U.T.T.I"})
+     */
+    public function mostraprestitoAction(Request $request, $idprestito = "T.U.T.T.I")
+    {
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestiti = $repo->findAll();
+
+        return $this->render('default/mostraprestito.html.twig', array(
+            'prestiti' => $prestiti,
+        ));
+    }
+
+    /**
+     * @Route("/edit/nuovoprestito/", name="nuovoprestito")
+     */
+    public function nuovoprestitoAction(Request $request)
+    {
+        // nuovo prestito: mostra la pagina utenti, da cui verra' scelto l'utente a cui fare il prestito
+	return $this->redirectToRoute('mostrautente');
+    }
+
+    /**
+     * @Route("/edit/nuovoprestitoautente/{username}", name="nuovoprestitoautente")
+     */
+    public function nuovoprestitoautenteAction(Request $request, $username)
+    {
+        // nuovo prestito all'utente selezionato
+
+        $repoUtente = $this->getDoctrine()->getRepository('AppBundle:Utente');
+	$utente = $repoUtente->findOneByUsername($username);
+
+	$prestito = new Prestito();
+	$form = $this->createFormBuilder();
+	$form = $form->add('protocollo', TextType::class);
+	$form = $form->add('titolo1', TextType::class);
+	$form = $form->add('titolo2', TextType::class);
+	$form = $form->add('collocazione', TextType::class);
+	$form = $form->add('note', TextType::class);
+	$form = $form->getForm();
+	$form->handleRequest($request);
+
+	if ($form->isSubmitted() && $form->isValid()) {
+	    $data = $form->getData();
+	    $prestito->setProtocollo($data['protocollo']);
+	    $prestito->setTitolo1($data['titolo1']);
+	    $prestito->setTitolo2($data['titolo2']);
+	    $prestito->setCollocazione($data['collocazione']);
+	    $prestito->setNote($data['note']);
+
+	    // campi impostati automaticamente
+	    $prestito->setDataPrestito(new \DateTime());
+	    $prestito->setBibliotecarioPrestito($this->get('security.context')->getToken()->getUser()->getUsername());
+	    $prestito->setUtente($username);
+	    
+	    // campi impostati a null di default
+	    $prestito->setDataRestituzione(null);
+	    $prestito->setRichiestaProroga("");
+	    $prestito->setBibliotecarioRestituzione(null);
+
+	    $em = $this->getDoctrine()->getManager();
+	    $em->persist($prestito);
+	    $em->flush();
+	    return $this->redirectToRoute('mostraprestito');
+	}
+
+        return $this->render('default/editprestito.html.twig', array(
+            'form' => $form->createView(),
+	    'utente' => $utente,
+	    'prestito' => $prestito,
+	    ));
+    }
+
+
+
+
    /**
      * @Route("/logout", name="logout")
      */

@@ -4,30 +4,25 @@
 
 Pagina Principale
 
-<ul>
-  <li> <a href="{{ path('editutente') }}" class="button" style="width:23%">Nuovo utente</a> </li>
-  <li> <a href="{{ path('mostrautente') }}" class="button" style="width:23%">Lista utenti</a> </li>
-</ul>
+<br>
 
-<hr><hr><hr><b>ANCORA DA FARE</b>
+  <a href="{{ path('nuovoprestito') }}" class="button" style="width:46%">NUOVO PRESTITO</a> 
 
-<ul>
+<br>
 
-<li> <a href="{{ path('homepage') }}" class="button" style="width:23%">NUOVO PRESTITO</a> </li>
+  <a href="{{ path('mostraprestito') }}" class="button" style="width:23%">Prestiti da restituire</a>
+  <a href="{{ path('mostrautente') }}" class="button" style="width:23%">Lista utenti</a>
 
-<li> <a href="{{ path('homepage') }}" class="button" style="width:23%">PROLUNGA PRESTITO</a> </li>
+<br>
 
-</ul>
+  <a href="{{ path('mostraprestito') }}" class="button" style="width:23%">Tutti prestiti</a>
+  <a href="{{ path('editutente') }}" class="button" style="width:23%">Nuovo utente</a>
 
-<hr>
+<hr><hr><hr>
+  <b>ANCORA DA FARE</b>
 
-<ul>
-    <li> <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista utenti con materiale in prestito</a> </li>
-</ul>
-
-<ul>
-  <li> <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista tutti prestiti</a> </li>
-    <li> <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista prestiti da restituire</a> </li>
-</ul>
+  <a href="{{ path('homepage') }}" class="button" style="width:23%">PROLUNGA PRESTITO</a> 
+  <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista utenti con materiale in prestito</a> 
+<hr><hr><hr>
 
 {% endblock %}

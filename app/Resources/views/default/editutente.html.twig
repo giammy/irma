@@ -2,6 +2,12 @@
 
 {% block body %}
 
+{% if utente.username is not null %}
+<a href="{{ path('nuovoprestitoautente', {'username': utente.username }) }}" class="button" style="width:90%">
+  NUOVO PRESTITO A QUESTO UTENTE</a> 
+{% endif %}
+
+
 {{ form_start(form) }}
 
 <table>
@@ -25,10 +31,6 @@
     <td>{{ form_widget(attribute(form, "residenza"), { 'value': utente.residenza, 'attr': {'size': '60'} }) }} </td>
   </tr>
   <tr>
-    <td> Consenso: </td>
-    <td>{{ form_widget(attribute(form, "consenso"), { 'value': utente.consenso, 'attr': {'size': '60'} }) }} </td>
-  </tr>
-  <tr>
     <td> Tipo Documento: </td>
     <td>{{ form_widget(attribute(form, "tipoDocumento"), { 'value': utente.tipoDocumento, 'attr': {'size': '60'} }) }} </td>
   </tr>
@@ -40,13 +42,16 @@
     <td> Numero documento: </td>
     <td>{{ form_widget(attribute(form, "numeroDocumento"), { 'value': utente.numeroDocumento, 'attr': {'size': '60'} }) }} </td>
   </tr>
+  <tr>
+    <td> Consenso: </td>
+    <td>{{ form_widget(attribute(form, "consenso"), { 'value': utente.consenso, 'attr': {'size': '60'} }) }} </td>
+  </tr>
 
 </table>
 
 <input type="submit" value="SALVA" class='button' style='width: 23%; font-size: 20px;'/>
 
-{% if utente.username is null %}
-{% else %}
+{% if utente.username is not null %}
 <a href="{{ path('eliminautente', {'username': utente.username }) }}" class="button" style="width:23%" onclick="return confirm('Sei sicuro di voler eliminare questo utente?')">Elimina utente</a> 
 {% endif %}
 

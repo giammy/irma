@@ -59,7 +59,7 @@ class Prestito
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dataRestituzione", type="datetime")
+     * @ORM\Column(name="dataRestituzione", type="datetime", nullable=true)
      */
     private $dataRestituzione;
 
@@ -73,14 +73,14 @@ class Prestito
     /**
      * @var string
      *
-     * @ORM\Column(name="bibliotecarioPrestito", type="string", length=255)
+     * @ORM\Column(name="bibliotecarioPrestito", type="string", length=255, nullable=true)
      */
     private $bibliotecarioPrestito;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bibliotecarioRestituzione", type="string", length=255)
+     * @ORM\Column(name="bibliotecarioRestituzione", type="string", length=255, nullable=true)
      */
     private $bibliotecarioRestituzione;
 
