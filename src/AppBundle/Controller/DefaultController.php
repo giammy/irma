@@ -25,6 +25,19 @@ class DefaultController extends Controller
         ));
     }
 
+
+    /**
+     * @Route("/stat", name="adminhomepage")
+     */
+    public function adminindexAction(Request $request)
+    {
+        // replace this example code with whatever you need
+        return $this->render('default/adminindex.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+        ));
+    }
+
+
     /**
      * @Route("/mostra/utente/{username}", name="mostrautente", defaults={"username"="T.U.T.T.I"})
      */
@@ -140,6 +153,99 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/mostra/prestitoincorso", name="mostraprestitoincorso")
+     */
+    public function mostraprestitoincorsoAction(Request $request)
+    {
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestiti = $repo->findAll();
+	$prestitiInCorso = array_filter ($prestiti, function($p){ return is_null($p->getDataRestituzione());});
+
+        return $this->render('default/mostraprestito.html.twig', array(
+            'prestiti' => $prestitiInCorso,
+        ));
+    }
+
+
+
+    /**
+     * @Route("/edit/prestito/{id}", name="editprestito")
+     */
+    public function editprestitoAction(Request $request, $id)
+    {
+        // edit prestito
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestito = $repo->findOneById($id);
+
+	$form = $this->createFormBuilder();
+	$form = $form->add('protocollo', TextType::class);
+	$form = $form->add('titolo1', TextType::class);
+	$form = $form->add('titolo2', TextType::class);
+	$form = $form->add('collocazione', TextType::class);
+	$form = $form->add('note', TextType::class);
+	$form = $form->add('richiestaProroga', TextType::class);
+	$form = $form->getForm();
+	$form->handleRequest($request);
+
+	if ($form->isSubmitted() && $form->isValid()) {
+	    $data = $form->getData();
+	    $prestito->setProtocollo($data['protocollo']);
+	    $prestito->setTitolo1($data['titolo1']);
+	    $prestito->setTitolo2($data['titolo2']);
+	    $prestito->setCollocazione($data['collocazione']);
+	    $prestito->setNote($data['note']);
+	    $prestito->setRichiestaProroga($data['richiestaProroga']);
+	    $em = $this->getDoctrine()->getManager();
+	    $em->persist($prestito);
+	    $em->flush();
+	    // vai alla pagina "mostra prestiti in corso"
+	    return $this->redirectToRoute('mostraprestitoincorso');
+	}
+
+        return $this->render('default/editprestito.html.twig', array(
+            'form' => $form->createView(),
+            'prestito' => $prestito,
+        ));
+    }
+
+
+    /**
+     * @Route("/edit/prestito/prolungato/{id}", name="prestitoprolungato")
+     */
+    public function prestitoprolungatoAction(Request $request, $id)
+    {
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestito = $repo->findOneById($id);
+	$date = new \DateTime(date('Y-m-d H:i:s'));
+	$dataStr = date_format($date, 'd/m/Y');
+	$prestito->setRichiestaProroga("Proroga in data " . $dataStr);
+	$em = $this->getDoctrine()->getManager();
+	$em->persist($prestito);
+	$em->flush();
+
+        // vai alla pagina "mostra prestiti in corso"
+	return $this->redirectToRoute('mostraprestitoincorso');
+    }
+
+    /**
+     * @Route("/edit/prestito/restituito/{id}", name="prestitorestituito")
+     */
+    public function prestitorestituitoAction(Request $request, $id)
+    {
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestito = $repo->findOneById($id);
+	$prestito->setDataRestituzione(new \DateTime(date('Y-m-d H:i:s')));
+	$em = $this->getDoctrine()->getManager();
+	$em->persist($prestito);
+	$em->flush();
+
+        // vai alla pagina "mostra prestiti in corso"
+	return $this->redirectToRoute('mostraprestitoincorso');
+    }
+
+
+
+    /**
      * @Route("/edit/nuovoprestito/", name="nuovoprestito")
      */
     public function nuovoprestitoAction(Request $request)
@@ -192,7 +298,7 @@ class DefaultController extends Controller
 	    return $this->redirectToRoute('mostraprestito');
 	}
 
-        return $this->render('default/editprestito.html.twig', array(
+        return $this->render('default/nuovoprestito.html.twig', array(
             'form' => $form->createView(),
 	    'utente' => $utente,
 	    'prestito' => $prestito,

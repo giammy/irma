@@ -2,7 +2,6 @@
 
 {% block body %}
 
-Pagina Principale
 
 <br>
 
@@ -10,19 +9,12 @@ Pagina Principale
 
 <br>
 
-  <a href="{{ path('mostraprestito') }}" class="button" style="width:23%">Prestiti da restituire</a>
+  <a href="{{ path('mostraprestitoincorso') }}" class="button" style="width:23%">Prestiti da restituire</a>
   <a href="{{ path('mostrautente') }}" class="button" style="width:23%">Lista utenti</a>
 
 <br>
 
   <a href="{{ path('mostraprestito') }}" class="button" style="width:23%">Tutti prestiti</a>
   <a href="{{ path('editutente') }}" class="button" style="width:23%">Nuovo utente</a>
-
-<hr><hr><hr>
-  <b>ANCORA DA FARE</b>
-
-  <a href="{{ path('homepage') }}" class="button" style="width:23%">PROLUNGA PRESTITO</a> 
-  <a href="{{ path('homepage') }}" class="button" style="width:23%">Lista utenti con materiale in prestito</a> 
-<hr><hr><hr>
 
 {% endblock %}

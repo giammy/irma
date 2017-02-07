@@ -23,12 +23,12 @@ Elenco prestiti.
   <tbody>
     {% for prestito in prestiti %}
     <tr>
-      <td> {{ prestito.protocollo }} </td>
+      <td> <a href ="{{ path('editprestito', {'id': prestito.id }) }}"> {{ prestito.protocollo }} </a> </td>
       <td> {{ prestito.titolo1 }} </td>
       <td> {{ prestito.titolo2 }} </td>
       <td> {{ prestito.collocazione }} </td>
       <td> {{ prestito.dataPrestito|date('d/m/Y') }} </td>
-      <td> {{ prestito.dataRestituzione|date('d/m/Y') }} </td>
+      <td> {% if prestito.dataRestituzione %} {{ prestito.dataRestituzione|date('d/m/Y') }} {% endif %} </td>
       <td> {{ prestito.richiestaProroga }} </td>
       <td> {{ prestito.note }} </td>
       <td> <a href ="{{ path('editutente', {'username': prestito.utente }) }}"> {{ prestito.utente }} </a> </td>

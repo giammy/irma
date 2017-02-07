@@ -7,6 +7,8 @@ TODO
 
 - gestire logout???
 - esportare /vedi/prestiti/id e /vedi/prestiti/tutti in CSV
+- schermata utente - bottone mostra tutti i prestiti dell'utente
+- aggiungi controllo formato protocollo
 
 
 *** Software gestione prestiti

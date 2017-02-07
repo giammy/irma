@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+{{ form_start(form) }}
+
+Prestito per l'utente {{utente.nome}} {{utente.cognome}}
+
+<table>
+  <tr>
+    <td> Protocollo: </td>
+    <td> {{ form_widget(attribute(form, "protocollo"), { 'value': "", 'attr': {'size': '60'} }) }} </td>  </tr>
+  <tr>
+    <td> Titolo1: </td>
+    <td>{{ form_widget(attribute(form, "titolo1"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Titolo2: </td>
+    <td>{{ form_widget(attribute(form, "titolo2"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Collocazione: </td>
+    <td>{{ form_widget(attribute(form, "collocazione"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+  </tr>
+  <tr>
+    <td> Note: </td>
+    <td>{{ form_widget(attribute(form, "note"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+  </tr>
+
+</table>
+
+<input type="submit" value="SALVA" class='button' style='width: 23%; font-size: 20px;'/>
+
+{{ form_end(form) }}
+
+{% endblock %}
