@@ -172,52 +172,6 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/edit/prestito/{id}", name="editprestito")
-     */
-    public function editprestitoAction(Request $request, $id)
-    {
-        // edit prestito
-        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
-        $prestito = $repo->findOneById($id);
-
-	$form = $this->createFormBuilder(
-	      null, array(
-              	    'data_class' => 'AppBundle\Entity\Prestito',
-        	    'constraints' => array(new Assert\Callback('validateCollocazione'))
-              )
-        );
-	$form = $form->add('protocollo', TextType::class);
-	$form = $form->add('titolo1', TextType::class);
-	$form = $form->add('titolo2', TextType::class);
-	$form = $form->add('collocazione', TextType::class);
-	$form = $form->add('note', TextType::class);
-	$form = $form->add('richiestaProroga', TextType::class);
-	$form = $form->getForm();
-	$form->handleRequest($request);
-
-	if ($form->isSubmitted() && $form->isValid()) {
-	    $data = $form->getData();
-	    $prestito->setProtocollo($data->getProtocollo());
-	    $prestito->setTitolo1($data->getTitolo1());
-	    $prestito->setTitolo2($data->getTitolo2());
-	    $prestito->setCollocazione($data->getCollocazione());
-	    $prestito->setNote($data->getNote());
-	    $prestito->setRichiestaProroga($data->getRichiestaProroga());
-	    $em = $this->getDoctrine()->getManager();
-	    $em->persist($prestito);
-	    $em->flush();
-	    // vai alla pagina "mostra prestiti in corso"
-	    return $this->redirectToRoute('mostraprestitoincorso');
-	}
-
-        return $this->render('default/editprestito.html.twig', array(
-            'form' => $form->createView(),
-            'prestito' => $prestito,
-        ));
-    }
-
-
-    /**
      * @Route("/edit/prestito/prolungato/{id}", name="prestitoprolungato")
      */
     public function prestitoprolungatoAction(Request $request, $id)
@@ -279,11 +233,17 @@ class DefaultController extends Controller
         	    'constraints' => array(new Assert\Callback('validateCollocazione'))
               )
         );
-	$form = $form->add('protocollo', TextType::class);
+	$form = $form->add('protocollo', TextType::class
+	      	    //, array('data'  => "pippo",)
+		    );
 	$form = $form->add('titolo1', TextType::class);
 	$form = $form->add('titolo2', TextType::class);
 	$form = $form->add('collocazione', TextType::class);
-	$form = $form->add('note', TextType::class);
+	$form = $form->add('note', TextType::class, array(
+    	      	    'required'    => false,
+		    // 'placeholder' => '',
+    		    'empty_data'  => null
+		    ));
 	$form = $form->getForm();
 	$form->handleRequest($request);
 
@@ -319,6 +279,58 @@ class DefaultController extends Controller
     }
 
 
+    /**
+     * @Route("/edit/prestito/{id}", name="editprestito")
+     */
+    public function editprestitoAction(Request $request, $id)
+    {
+        // edit prestito
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestito = $repo->findOneById($id);
+
+	$form = $this->createFormBuilder(
+	      null, array(
+              	    'data_class' => 'AppBundle\Entity\Prestito',
+        	    'constraints' => array(new Assert\Callback('validateCollocazione'))
+              )
+        );
+	$form = $form->add('protocollo', TextType::class);
+	$form = $form->add('titolo1', TextType::class);
+	$form = $form->add('titolo2', TextType::class);
+	$form = $form->add('collocazione', TextType::class);
+	$form = $form->add('note', TextType::class, array(
+    	      	    'required'    => false,
+		    // 'placeholder' => '',
+    		    'empty_data'  => null
+		    ));
+	$form = $form->add('richiestaProroga', TextType::class, array(
+    	      	    'required'    => false,
+		    // 'placeholder' => '',
+    		    'empty_data'  => null
+		    ));
+	$form = $form->getForm();
+	$form->handleRequest($request);
+
+	if ($form->isSubmitted() && $form->isValid()) {
+	    $data = $form->getData();
+	    $prestito->setProtocollo($data->getProtocollo());
+	    $prestito->setTitolo1($data->getTitolo1());
+	    $prestito->setTitolo2($data->getTitolo2());
+	    $prestito->setCollocazione($data->getCollocazione());
+	    $prestito->setNote($data->getNote());
+	    $prestito->setRichiestaProroga($data->getRichiestaProroga());
+	    $em = $this->getDoctrine()->getManager();
+	    $em->persist($prestito);
+	    $em->flush();
+	    // vai alla pagina "mostra prestiti in corso"
+	    return $this->redirectToRoute('mostraprestitoincorso');
+	}
+
+        return $this->render('default/editprestito.html.twig', array(
+            'form' => $form->createView(),
+            'prestito' => $prestito,
+        ));
+    }
 
 
    /**

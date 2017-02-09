@@ -5,12 +5,10 @@ https://github.com/giammy/irma
 
 TODO
 
-- campo proroga in edit prestito - puo' essere vuoto
 - nuovo prestito - se sbaglio formato cancella tutti i campi
 - gestire logout???
 - esportare /vedi/prestiti/id e /vedi/prestiti/tutti in CSV
 - schermata utente - bottone mostra tutti i prestiti dell'utente
-- aggiungi controllo formato protocollo
 
 
 *** Software gestione prestiti

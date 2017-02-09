@@ -88,7 +88,7 @@ class Prestito
     /**
      * @var string
      *
-     * @ORM\Column(name="richiestaProroga", type="string", length=4096)
+     * @ORM\Column(name="richiestaProroga", type="string", length=4096, nullable=true)
      */
     private $richiestaProroga;
 
