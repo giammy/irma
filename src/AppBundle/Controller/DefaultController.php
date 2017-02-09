@@ -6,6 +6,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
+
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
@@ -177,7 +180,12 @@ class DefaultController extends Controller
         $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
         $prestito = $repo->findOneById($id);
 
-	$form = $this->createFormBuilder();
+	$form = $this->createFormBuilder(
+	      null, array(
+              	    'data_class' => 'AppBundle\Entity\Prestito',
+        	    'constraints' => array(new Assert\Callback('validateCollocazione'))
+              )
+        );
 	$form = $form->add('protocollo', TextType::class);
 	$form = $form->add('titolo1', TextType::class);
 	$form = $form->add('titolo2', TextType::class);
@@ -189,12 +197,12 @@ class DefaultController extends Controller
 
 	if ($form->isSubmitted() && $form->isValid()) {
 	    $data = $form->getData();
-	    $prestito->setProtocollo($data['protocollo']);
-	    $prestito->setTitolo1($data['titolo1']);
-	    $prestito->setTitolo2($data['titolo2']);
-	    $prestito->setCollocazione($data['collocazione']);
-	    $prestito->setNote($data['note']);
-	    $prestito->setRichiestaProroga($data['richiestaProroga']);
+	    $prestito->setProtocollo($data->getProtocollo());
+	    $prestito->setTitolo1($data->getTitolo1());
+	    $prestito->setTitolo2($data->getTitolo2());
+	    $prestito->setCollocazione($data->getCollocazione());
+	    $prestito->setNote($data->getNote());
+	    $prestito->setRichiestaProroga($data->getRichiestaProroga());
 	    $em = $this->getDoctrine()->getManager();
 	    $em->persist($prestito);
 	    $em->flush();
@@ -265,7 +273,12 @@ class DefaultController extends Controller
 	$utente = $repoUtente->findOneByUsername($username);
 
 	$prestito = new Prestito();
-	$form = $this->createFormBuilder();
+	$form = $this->createFormBuilder(
+	      null, array(
+              	    'data_class' => 'AppBundle\Entity\Prestito',
+        	    'constraints' => array(new Assert\Callback('validateCollocazione'))
+              )
+        );
 	$form = $form->add('protocollo', TextType::class);
 	$form = $form->add('titolo1', TextType::class);
 	$form = $form->add('titolo2', TextType::class);
@@ -276,11 +289,11 @@ class DefaultController extends Controller
 
 	if ($form->isSubmitted() && $form->isValid()) {
 	    $data = $form->getData();
-	    $prestito->setProtocollo($data['protocollo']);
-	    $prestito->setTitolo1($data['titolo1']);
-	    $prestito->setTitolo2($data['titolo2']);
-	    $prestito->setCollocazione($data['collocazione']);
-	    $prestito->setNote($data['note']);
+	    $prestito->setProtocollo($data->getProtocollo());
+	    $prestito->setTitolo1($data->getTitolo1());
+	    $prestito->setTitolo2($data->getTitolo2());
+	    $prestito->setCollocazione($data->getCollocazione());
+	    $prestito->setNote($data->getNote());
 
 	    // campi impostati automaticamente
 	    $prestito->setDataPrestito(new \DateTime());

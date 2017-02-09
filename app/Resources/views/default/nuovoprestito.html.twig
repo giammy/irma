@@ -22,6 +22,7 @@ Prestito per l'utente {{utente.nome}} {{utente.cognome}}
   <tr>
     <td> Collocazione: </td>
     <td>{{ form_widget(attribute(form, "collocazione"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+    <td> <b>{{ form_errors(form.collocazione) }}</b> </td>
   </tr>
   <tr>
     <td> Note: </td>

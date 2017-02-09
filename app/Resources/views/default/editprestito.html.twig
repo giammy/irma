@@ -23,7 +23,8 @@
   </tr>
   <tr>
     <td> Collocazione: </td>
-    <td>{{ form_widget(attribute(form, "collocazione"), { 'value': prestito.collocazione, 'attr': {'size': '60'} }) }} </td>
+    <td>{{ form_widget(attribute(form, "collocazione"), { 'value': prestito.collocazione, 'attr': {'size': '60'} }) }}  </td>
+    <td> <b>{{ form_errors(form.collocazione) }}</b> </td>
   </tr>
   <tr>
     <td> Note: </td>

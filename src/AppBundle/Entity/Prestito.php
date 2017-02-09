@@ -4,14 +4,36 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
+
+
 /**
  * Prestito
  *
  * @ORM\Table(name="prestito")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PrestitoRepository")
+ *
  */
 class Prestito
 {
+     public function validateCollocazione(ExecutionContextInterface $context)
+     {
+         // check constraints FORMATO "DON.F.924"
+	 $collocazione = $this->getCollocazione();
+
+	 if (strlen($collocazione)!=9 or
+	     !ctype_alpha(substr($collocazione, 0, 3)) or
+	     $collocazione[3]!='.' or
+	     !ctype_alpha(substr($collocazione, 4, 1)) or
+	     $collocazione[5]!='.' or
+	     !ctype_digit(substr($collocazione, 6, 3)) ) {
+             $context->buildViolation('La collocazione deve essere nel formato DON.F.924')
+                ->atPath('collocazione')
+                ->addViolation();
+	 }
+     }
+
     /**
      * @var int
      *
