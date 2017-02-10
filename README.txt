@@ -10,37 +10,35 @@ TODO
 
 Manuale
 
-Vi sono 2 schermate
-- homepage
-- schermata "stat" (accessibile al link in basso "stat" presente nella homepage)
-
-Schermata homepage
-L'utente bibliotecario di solito fa queste 2 azioni
+*** SCHERMATA HOMEPAGE
+L'utente bibliotecario ha 2 bottoni grandi con le operazioni di uso comune
 - bottone NUOVO PRESTITO
-- bottone RASITUISCI/RINNOVA
-Nella pagina e' presente un link poco visibile (footer in basso, "stat)
-- link a pagina "Statistiche e utilita'"
+- bottone RESITUISCI/RINNOVA
+Nella pagina e' inoltre presente un link (footer in basso a destra "stat")
+- link a pagina "Statistiche e utilita'" (di solito non servono queste opzioni)
 
-Pagina NUOVO PRESTITO
-Compare la lista degli utenti, il bibliotecario cerca l'utente che vuole il prestito
-scorrendo la pagina o con il "CERCA" in cima alla tabella a destra.
-Se l'utente c'e', preme il bottone presta e va nella pagina prestito
+*** SCHERMATA d'arrivo dal bottone NUOVO PRESTITO
+Compare la lista degli utenti, il bibliotecario cerca l'utente che vuole 
+il prestito scorrendo la pagina o con il "CERCA" in cima alla tabella a destra.
+Se l'utente non c'e' preme "CREA NUOVO UTENTE", compila i dati dell'utente, 
+li salva e si ritrova nella pagina della lista utenti come prima..
+Ora trova l'utente, preme il bottone PRESTA e va nella SCHERMATA PRESTITO
 
-Se l'utente non c'e' preme "CREA NUOVO UTENTE", compila i dati dell'utente, li salva
-e si ritrova nella pagina precedente.
-
+*** SCHERMATA PRESTITO
 Nella pagina prestito, il bibliotecario compila i dati del prestito e preme SALVA
-
-A questo punto si trova nella pagina dei prestiti in corso.
+A questo punto si trova nella SCHERMATA DEI PRESTITI IN CORSO.
 
 Se nella homepage preme il tasto RINNOVA O RESTITUISCI, va nella
-pagina dei prestiti in corso, qui per ciascun prestito puo' premere il bottone RINNOVA o RESTITUISCI
-In questa pagina:
-- se preme sul nome del protocollo, entra nella scheda prestito e la puo' cambiare (tipo aggiungere note)
-- se preme sul nome dell'utente entra nella scheda dell'utente e la puo' cambiare
+SCHERMATA DEI PRESTITI IN CORSO
 
+*** SCHERMATA DEI PRESTITI IN CORSO
+Nella schermata dei prestiti in corso, per ciascun prestito puo' premere il bottone 
+RINNOVA o RESTITUISCI che registrano nel database l'informazione.
+In questa pagina si puo' anche
+- cliccare sul nome del protocollo, si entra nella scheda prestito e la puo' cambiare (tipo aggiungere note)
+- cliccare sul nome dell'utente, si entra nella scheda dell'utente e la puo' cambiare
 
-Nella pagina stat
+*** SCHERMATA STAT 
 - lista utenti: mostra la lista degli utenti e c'e' il bottone per esportare in CSV
 - lista prestiti: mostra la lista di tutti i prestiti e c'e' il bottone per esportare in CSV
 
@@ -90,55 +88,6 @@ string255   bibliotecario  # bibliotecario che l'ha iscritto
 string255   tipoDocumento  # tipo di documento fornito tipo Carta Identità/Tesserino Unipd
 string255   emessoDa        #
 string255   numeroDocumento # e suo codice, CI22424 / 21313421LT
-
-
-*** Struttura pagine:
-
-Logica dell'applicazione:
-il bibliotecario entra autenticandosi (registrazione dei bibliotecari fatta a mano)
-e si trova nella homepage.
-
-Qui ci sono 2 grandi bottone "NUOVO PRESTITO" e "RESTITUZIONE PRESTITO"
-
-NUOVO PRESTITO
-- Premendo NUOVO PRESTITO compare la lista degli utenti registrati,
-  il bibliotecario cerca l'utente o lo crea se non c'e'
-- clicca sul nome dell'utente trovato.
-- Compare la scheda utente che ha un bottone "NUOVO PRESTITO"
-- Preme il bottone e compare la scheda del prestito da compilare
-- SALVA
-
-RESTITUZIONE PRESTITO
-- compare una pagina con la lista dei prestiti in corso
-- il bibliotecario cerca il prestito in questione
-- clicca e compare la scheda del prestito
-- qui c'e' un bottone "PROLUNGA PRESTITO" e un bottone "RESTITUISCI PRESTITO"
-
-
-*** Pagine:
-
-/
-homepage, con link per
-- NUOVO PRESTITO
-- PROLUNGA PRESTITO
-- crea nuovo utente
-- lista utenti
-- lista utenti con materiale in prestito
-- lista prestiti da restituire
-
-/edit/prestito/nuovo
-/edit/prestito/id
-/edit/utente/nuovo
-/edit/utente/username
-ciascuna di queste pagine serve a creare o editare prestito o utente
-
-/mostra/prestiti/tutti
-/mostra/prestiti/nonrestituiti
-/mostra/prestiti/id
-
-/mostra/utenti/tutti
-/mostra/utenti/conprestiti
-/mostra/utenti/username
 
 
 *** Installazione
