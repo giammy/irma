@@ -2,19 +2,10 @@
 
 {% block body %}
 
-
-<br>
-
-  <a href="{{ path('nuovoprestito') }}" class="button" style="width:46%">NUOVO PRESTITO</a> 
-
-<br>
-
-  <a href="{{ path('mostraprestitoincorso') }}" class="button" style="width:23%">Prestiti da restituire</a>
-  <a href="{{ path('mostrautente') }}" class="button" style="width:23%">Lista utenti</a>
-
-<br>
-
-  <a href="{{ path('mostraprestito') }}" class="button" style="width:23%">Tutti prestiti</a>
-  <a href="{{ path('editutente') }}" class="button" style="width:23%">Nuovo utente</a>
+<center>
+  <a href="{{ path('nuovoprestito') }}" class="button" style="width:42%">NUOVO PRESTITO</a> 
+<br><p><br>
+  <a href="{{ path('mostraprestitoincorso') }}" class="button" style="width:42%">RESTITUZIONE o RINNOVO</a>
+</center>
 
 {% endblock %}

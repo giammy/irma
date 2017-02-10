@@ -13,20 +13,21 @@ Prestito per l'utente {{utente.nome}} {{utente.cognome}}
     <td> {{ form_widget(attribute(form, "protocollo"), { 'attr': {'size': '60'} }) }} </td>  </tr>
   <tr>
     <td> Titolo1: </td>
-    <td>{{ form_widget(attribute(form, "titolo1"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+    <td>{{ form_widget(attribute(form, "titolo1"), { 'attr': {'size': '60'} }) }} </td>
+    <!-- 'value': "", -->
   </tr>
   <tr>
     <td> Titolo2: </td>
-    <td>{{ form_widget(attribute(form, "titolo2"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+    <td>{{ form_widget(attribute(form, "titolo2"), { 'attr': {'size': '60'} }) }} </td>
   </tr>
   <tr>
     <td> Collocazione: </td>
-    <td>{{ form_widget(attribute(form, "collocazione"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+    <td>{{ form_widget(attribute(form, "collocazione"), { 'attr': {'size': '60'} }) }} </td>
     <td> <b>{{ form_errors(form.collocazione) }}</b> </td>
   </tr>
   <tr>
     <td> Note: </td>
-    <td>{{ form_widget(attribute(form, "note"), { 'value': "", 'attr': {'size': '60'} }) }} </td>
+    <td>{{ form_widget(attribute(form, "note"), { 'attr': {'size': '60'} }) }} </td>
   </tr>
 
 </table>

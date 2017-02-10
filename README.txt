@@ -5,10 +5,53 @@ https://github.com/giammy/irma
 
 TODO
 
-- nuovo prestito - se sbaglio formato cancella tutti i campi
 - gestire logout???
-- esportare /vedi/prestiti/id e /vedi/prestiti/tutti in CSV
 - schermata utente - bottone mostra tutti i prestiti dell'utente
+
+Manuale
+
+Vi sono 2 schermate
+- homepage
+- schermata "stat" (accessibile al link in basso "stat" presente nella homepage)
+
+Schermata homepage
+L'utente bibliotecario di solito fa queste 2 azioni
+- bottone NUOVO PRESTITO
+- bottone RASITUISCI/RINNOVA
+Nella pagina e' presente un link poco visibile (footer in basso, "stat)
+- link a pagina "Statistiche e utilita'"
+
+Pagina NUOVO PRESTITO
+Compare la lista degli utenti, il bibliotecario cerca l'utente che vuole il prestito
+scorrendo la pagina o con il "CERCA" in cima alla tabella a destra.
+Se l'utente c'e', preme il bottone presta e va nella pagina prestito
+
+Se l'utente non c'e' preme "CREA NUOVO UTENTE", compila i dati dell'utente, li salva
+e si ritrova nella pagina precedente.
+
+Nella pagina prestito, il bibliotecario compila i dati del prestito e preme SALVA
+
+A questo punto si trova nella pagina dei prestiti in corso.
+
+Se nella homepage preme il tasto RINNOVA O RESTITUISCI, va nella
+pagina dei prestiti in corso, qui per ciascun prestito puo' premere il bottone RINNOVA o RESTITUISCI
+In questa pagina:
+- se preme sul nome del protocollo, entra nella scheda prestito e la puo' cambiare (tipo aggiungere note)
+- se preme sul nome dell'utente entra nella scheda dell'utente e la puo' cambiare
+
+
+Nella pagina stat
+- lista utenti: mostra la lista degli utenti e c'e' il bottone per esportare in CSV
+- lista prestiti: mostra la lista di tutti i prestiti e c'e' il bottone per esportare in CSV
+
+
+
+
+
+
+
+
+
 
 
 *** Software gestione prestiti

@@ -7,7 +7,7 @@
 <tr>
 <td width="70%">
 <b><h2>
-Cerca l'utente destinatario del prestito usando la casella CERCA a destra, e clicca sul nome.
+Cerca l'utente destinatario del prestito usando la casella CERCA a destra, e clicca sul bottone "PRESTA".
 <br>
 Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
 </h2></b>
@@ -24,6 +24,7 @@ Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
 <table id="tabellautenti">
   <thead>
     <tr>
+      <td></td>
       <td>Cognome</td>
       <td>Nome</td>
       <td>Email</td>
@@ -44,6 +45,7 @@ Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
   <tbody>
     {% for utente in utenti %}
     <tr>
+      <td><a href="{{ path('nuovoprestitoautente', {'username': utente.username }) }}" class="button">Presta</a></td>
       <td> <a href =" {{ path('editutente', {'username': utente.username }) }} "> {{ utente.cognome }} </a> </td>
       <td><a href =" {{ path('editutente', {'username': utente.username }) }} "> {{ utente.nome }} </a></td>
       <td> {{ utente.email }} </td>
@@ -65,6 +67,5 @@ Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
 </table>
 
 
-<a href="{{ path('esportalistautenti') }}" class="button" style="width:100%">Esporta lista utenti</a>
 
 {% endblock %}

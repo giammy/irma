@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContextInterface;
@@ -53,6 +54,20 @@ class DefaultController extends Controller
             'utenti' => $utenti,
         ));
     }
+
+    /**
+     * @Route("/mostra/utenteperprestito", name="mostrautenteperprestito")
+     */
+    public function mostrautenteprestitoAction(Request $request)
+    {
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Utente');
+        $utenti = $repo->findAll();
+
+        return $this->render('default/mostrautenteperprestito.html.twig', array(
+            'utenti' => $utenti,
+        ));
+    }
+
 
     public function createUsername($nome, $cognome) {
         $repoUtente = $this->getDoctrine()->getRepository('AppBundle:Utente');
@@ -130,7 +145,7 @@ class DefaultController extends Controller
 	    $em->persist($utente);
 	    $em->flush();
 
-	    return $this->redirectToRoute('mostrautente');
+	    return $this->redirectToRoute('mostrautenteperprestito');
 	}
 
         return $this->render('default/editutente.html.twig', array(
@@ -197,6 +212,7 @@ class DefaultController extends Controller
         $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
         $prestito = $repo->findOneById($id);
 	$prestito->setDataRestituzione(new \DateTime(date('Y-m-d H:i:s')));
+	$prestito->setBibliotecarioRestituzione($this->get('security.context')->getToken()->getUser()->getUsername());
 	$em = $this->getDoctrine()->getManager();
 	$em->persist($prestito);
 	$em->flush();
@@ -213,7 +229,7 @@ class DefaultController extends Controller
     public function nuovoprestitoAction(Request $request)
     {
         // nuovo prestito: mostra la pagina utenti, da cui verra' scelto l'utente a cui fare il prestito
-	return $this->redirectToRoute('mostrautente');
+	return $this->redirectToRoute('mostrautenteperprestito');
     }
 
     /**
@@ -268,7 +284,7 @@ class DefaultController extends Controller
 	    $em = $this->getDoctrine()->getManager();
 	    $em->persist($prestito);
 	    $em->flush();
-	    return $this->redirectToRoute('mostraprestito');
+	    return $this->redirectToRoute('mostraprestitoincorso');
 	}
 
         return $this->render('default/nuovoprestito.html.twig', array(
@@ -331,6 +347,66 @@ class DefaultController extends Controller
             'prestito' => $prestito,
         ));
     }
+
+
+   /**
+     * @Route("/view/esportalistautenti", name="esportalistautenti")
+     */
+    public function esportalistautentiAction(Request $request) {
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Utente');
+        $utenti = $repo->findAll();
+
+        $content = "username,ruolo,nome,cognome,residenza,cellulare,email,consenso,dataIscrizione,bibliotecario,tipoDocumento,emessoDa,numeroDocumento\n";
+	foreach($utenti as $u) {	
+	    $content = $content . $u->getUsername() . ","; 
+	    $content = $content . $u->getRuolo() . ","; 
+	    $content = $content . $u->getNome() . ","; 
+	    $content = $content . $u->getCognome() . ","; 
+	    $content = $content . $u->getResidenza() . ","; 
+	    $content = $content . $u->getCellulare() . ","; 
+	    $content = $content . $u->getEmail() . ","; 
+	    $content = $content . ($u->getConsenso()?"1":"0") . ","; 
+	    $content = $content . $u->getDataIscrizione()->format('Y-m-dTH:i:s') . ","; 
+	    $content = $content . $u->getBibliotecario() . ","; 
+	    $content = $content . $u->getTipoDocumento() . ","; 
+	    $content = $content . $u->getEmessoDa() . ","; 
+	    $content = $content . $u->getNumeroDocumento() . "\n"; 
+	}
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->setContent($content);
+        return $response;
+    }
+
+
+   /**
+     * @Route("/view/esportalistaprestiti", name="esportalistaprestiti")
+     */
+    public function esportalistaprestitiAction(Request $request) {
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestiti = $repo->findAll();
+
+        $content = "protocollo,titolo1,titolo2,collocazione,dataPrestito,dataRestituzione,richiestaProroga,bibliotecarioPresito,bibliotecarioRestituzione,note,utente\n";
+	foreach($prestiti as $u) {	
+	    $dataRestituzione = is_null($u->getDataRestituzione())?"":$u->getDataRestituzione()->format('Y-m-dTH:i:s');
+	    $content = $content . $u->getProtocollo() . ","; 
+	    $content = $content . $u->getTitolo1() . ","; 
+	    $content = $content . $u->getTitolo2() . ","; 
+	    $content = $content . $u->getCollocazione() . ","; 
+	    $content = $content . $u->getDataPrestito()->format('Y-m-dTH:i:s') . ","; 
+	    $content = $content . $dataRestituzione . ","; 
+	    $content = $content . $u->getRichiestaProroga() . ","; 
+	    $content = $content . $u->getbibliotecarioPrestito() . ","; 
+	    $content = $content . $u->getBibliotecarioRestituzione() . ","; 
+	    $content = $content . $u->getNote() . ","; 
+	    $content = $content . $u->getUtente() . "\n"; 
+	}
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->setContent($content);
+        return $response;
+    }
+
 
 
    /**
