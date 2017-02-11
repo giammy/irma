@@ -28,7 +28,7 @@ Elenco prestiti.
 
       <td><a href="{{ path('prestitorestituito', {'id': prestito.id}) }}" class="button" onclick='return confirm("Sei sicuro di voler restituire il prestito?")'>RESTITUITO</a> </td>
       <td><a href="{{ path('prestitoprolungato', {'id': prestito.id}) }}" class="button" onclick='return confirm("Sei sicuro di voler rinnovare il prestito?")'>RINNOVA</a></td>
-      <td> <a href ="{{ path('editprestito', {'id': prestito.id }) }}"> {{ prestito.protocollo }} </a> </td>
+      <td> <a href ="{{ path('editprestito', {'id': prestito.id, 'username': prestito.utente }) }}"> {{ prestito.protocollo }} </a> </td>
       <td> {{ prestito.titolo1 }} </td>
       <td> {{ prestito.titolo2 }} </td>
       <td> {{ prestito.collocazione }} </td>
@@ -42,7 +42,8 @@ Elenco prestiti.
   </tbody>
 </table>
 
-
+{% if isUtility %}
 <a href="{{ path('esportalistaprestiti') }}" class="button" style="width:100%">Esporta lista prestiti</a>
+{% endif %}
 
 {% endblock %}

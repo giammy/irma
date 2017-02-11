@@ -18,12 +18,27 @@ use AppBundle\Entity\Prestito;
 
 class DefaultController extends Controller
 {
+
+    /*
+     * utility
+     */
+    public function createUsername($nome, $cognome) {
+        $repoUtente = $this->getDoctrine()->getRepository('AppBundle:Utente');
+	$count = 0;
+	do {
+	    $username = strtolower($nome.".".$cognome.($count>0?$count:"")); 
+	    $count++;
+	    $utente = $repoUtente->findOneByUsername($username);
+	} while (!is_null($utente));
+	return $username;
+    }
+
+
     /**
      * @Route("/", name="homepage")
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
         return $this->render('default/index.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ));
@@ -31,55 +46,31 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/stat", name="adminhomepage")
+     * @Route("/utility", name="utilityhomepage")
      */
-    public function adminindexAction(Request $request)
+    public function utilityindexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/adminindex.html.twig', array(
+        return $this->render('default/indexutility.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ));
     }
 
 
     /**
-     * @Route("/mostra/utente/{username}", name="mostrautente", defaults={"username"="T.U.T.T.I"})
+     * @Route("/mostra/utenti/{option}", name="mostrautenti", defaults={"option"=""})
      */
-    public function mostrautenteAction(Request $request, $username = "T.U.T.T.I")
+    public function mostrautentiAction(Request $request, $option = "")
     {
         $repo = $this->getDoctrine()->getrepository('AppBundle:Utente');
         $utenti = $repo->findAll();
 
-        return $this->render('default/mostrautente.html.twig', array(
+        return $this->render('default/mostrautenti.html.twig', array(
             'utenti' => $utenti,
-        ));
+	    'isPerPrestito' => $option==="perprestito"?true:false,
+	    'isPerUtility' => $option==="CONEXPORT"?true:false,
+	    ));
     }
 
-    /**
-     * @Route("/mostra/utenteperprestito", name="mostrautenteperprestito")
-     */
-    public function mostrautenteprestitoAction(Request $request)
-    {
-        $repo = $this->getDoctrine()->getrepository('AppBundle:Utente');
-        $utenti = $repo->findAll();
-
-        return $this->render('default/mostrautenteperprestito.html.twig', array(
-            'utenti' => $utenti,
-        ));
-    }
-
-
-    public function createUsername($nome, $cognome) {
-        $repoUtente = $this->getDoctrine()->getRepository('AppBundle:Utente');
-	$count = 0;
-	do {
-	    $username = $count>0 ? $nome.".".$cognome.$count : $nome.".".$cognome;
-	    $username = strtolower($username);
-	    $count++;
-	    $utente = $repoUtente->findOneByUsername($username);
-	} while (!is_null($utente));
-	return $username;
-    }
 
     /**
      * @Route("/elimina/utente/{username}", name="eliminautente")
@@ -92,7 +83,7 @@ class DefaultController extends Controller
 	    $em->remove($utente);
 	    $em->flush();
 	}
-	return $this->redirectToRoute('mostrautente');
+	return $this->redirectToRoute('homepage');
     }
 
 
@@ -102,10 +93,9 @@ class DefaultController extends Controller
     public function editutenteAction(Request $request, $username = "N.U.O.V.O")
     {
         $repoUtente = $this->getDoctrine()->getRepository('AppBundle:Utente');
-	if ($username === "N.U.O.V.O") {
+	$utente = $repoUtente->findOneByUsername($username);
+	if (is_null($utente)) {
             $utente = new Utente();
-	} else {
-	    $utente = $repoUtente->findOneByUsername($username);
 	}
 
 	$form = $this->createFormBuilder();
@@ -145,7 +135,8 @@ class DefaultController extends Controller
 	    $em->persist($utente);
 	    $em->flush();
 
-	    return $this->redirectToRoute('mostrautenteperprestito');
+	    return $this->redirectToRoute('mostrautenti',
+					  array('option' => 'perprestito'));
 	}
 
         return $this->render('default/editutente.html.twig', array(
@@ -155,39 +146,27 @@ class DefaultController extends Controller
     }
 
 
-
-
     /**
-     * @Route("/mostra/prestito/{idprestito}", name="mostraprestito", defaults={"idprestito"="T.U.T.T.I"})
+     * @Route("/mostra/prestito/{option}", name="mostraprestito", defaults={"option"=""})
      */
-    public function mostraprestitoAction(Request $request, $idprestito = "T.U.T.T.I")
+    public function mostraprestitoAction(Request $request, $option = "")
     {
         $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
         $prestiti = $repo->findAll();
+
+	if ($option === "INCORSO") {
+	    $prestiti = array_filter($prestiti, function($p){ return is_null($p->getDataRestituzione());});
+	}
 
         return $this->render('default/mostraprestito.html.twig', array(
             'prestiti' => $prestiti,
-        ));
-    }
-
-    /**
-     * @Route("/mostra/prestitoincorso", name="mostraprestitoincorso")
-     */
-    public function mostraprestitoincorsoAction(Request $request)
-    {
-        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
-        $prestiti = $repo->findAll();
-	$prestitiInCorso = array_filter ($prestiti, function($p){ return is_null($p->getDataRestituzione());});
-
-        return $this->render('default/mostraprestito.html.twig', array(
-            'prestiti' => $prestitiInCorso,
+	    'isUtility' => $option==="CONEXPORT"?true:false,
         ));
     }
 
 
-
     /**
-     * @Route("/edit/prestito/prolungato/{id}", name="prestitoprolungato")
+     * @Route("/action/prestito/prolungato/{id}", name="prestitoprolungato")
      */
     public function prestitoprolungatoAction(Request $request, $id)
     {
@@ -201,11 +180,12 @@ class DefaultController extends Controller
 	$em->flush();
 
         // vai alla pagina "mostra prestiti in corso"
-	return $this->redirectToRoute('mostraprestitoincorso');
+	return $this->redirectToRoute('mostraprestito',
+					  array('option' => 'INCORSO'));
     }
 
     /**
-     * @Route("/edit/prestito/restituito/{id}", name="prestitorestituito")
+     * @Route("/action/prestito/restituito/{id}", name="prestitorestituito")
      */
     public function prestitorestituitoAction(Request $request, $id)
     {
@@ -218,9 +198,9 @@ class DefaultController extends Controller
 	$em->flush();
 
         // vai alla pagina "mostra prestiti in corso"
-	return $this->redirectToRoute('mostraprestitoincorso');
+	return $this->redirectToRoute('mostraprestito',
+					  array('option' => 'INCORSO'));
     }
-
 
 
     /**
@@ -228,21 +208,40 @@ class DefaultController extends Controller
      */
     public function nuovoprestitoAction(Request $request)
     {
-        // nuovo prestito: mostra la pagina utenti, da cui verra' scelto l'utente a cui fare il prestito
-	return $this->redirectToRoute('mostrautenteperprestito');
+        // nuovo prestito: mostra la pagina utenti,
+	// da cui verra' scelto l'utente a cui fare il prestito
+	return $this->redirectToRoute('mostrautenti',
+				      array('option' => 'perprestito'));
     }
 
+
     /**
-     * @Route("/edit/nuovoprestitoautente/{username}", name="nuovoprestitoautente")
+     * @Route("/edit/prestito/{id}/{username}", name="editprestito")
      */
-    public function nuovoprestitoautenteAction(Request $request, $username)
+    public function editprestitoAction(Request $request, $id, $username)
     {
         // nuovo prestito all'utente selezionato
 
         $repoUtente = $this->getDoctrine()->getRepository('AppBundle:Utente');
 	$utente = $repoUtente->findOneByUsername($username);
 
-	$prestito = new Prestito();
+        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
+        $prestito = $repo->findOneById($id);
+
+	if (is_null($prestito)) {
+	    $isNuovoPrestito = true;
+	    $prestito = new Prestito();
+	    // campi impostati automaticamente
+	    $prestito->setDataPrestito(new \DateTime());
+	    $prestito->setBibliotecarioPrestito($this->get('security.context')->getToken()->getUser()->getUsername());
+	    $prestito->setUtente($username);
+	    // campi impostati a null di default
+	    $prestito->setDataRestituzione(null);
+	    $prestito->setRichiestaProroga("");
+	    $prestito->setBibliotecarioRestituzione(null);
+	} else {
+	    $isNuovoPrestito = false;
+	}
 	$form = $this->createFormBuilder(
 	      null, array(
               	    'data_class' => 'AppBundle\Entity\Prestito',
@@ -260,71 +259,12 @@ class DefaultController extends Controller
 		    // 'placeholder' => '',
     		    'empty_data'  => null
 		    ));
-	$form = $form->getForm();
-	$form->handleRequest($request);
-
-	if ($form->isSubmitted() && $form->isValid()) {
-	    $data = $form->getData();
-	    $prestito->setProtocollo($data->getProtocollo());
-	    $prestito->setTitolo1($data->getTitolo1());
-	    $prestito->setTitolo2($data->getTitolo2());
-	    $prestito->setCollocazione($data->getCollocazione());
-	    $prestito->setNote($data->getNote());
-
-	    // campi impostati automaticamente
-	    $prestito->setDataPrestito(new \DateTime());
-	    $prestito->setBibliotecarioPrestito($this->get('security.context')->getToken()->getUser()->getUsername());
-	    $prestito->setUtente($username);
-	    
-	    // campi impostati a null di default
-	    $prestito->setDataRestituzione(null);
-	    $prestito->setRichiestaProroga("");
-	    $prestito->setBibliotecarioRestituzione(null);
-
-	    $em = $this->getDoctrine()->getManager();
-	    $em->persist($prestito);
-	    $em->flush();
-	    return $this->redirectToRoute('mostraprestitoincorso');
-	}
-
-        return $this->render('default/nuovoprestito.html.twig', array(
-            'form' => $form->createView(),
-	    'utente' => $utente,
-	    'prestito' => $prestito,
-	    ));
-    }
-
-
-    /**
-     * @Route("/edit/prestito/{id}", name="editprestito")
-     */
-    public function editprestitoAction(Request $request, $id)
-    {
-        // edit prestito
-        $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
-        $prestito = $repo->findOneById($id);
-
-	$form = $this->createFormBuilder(
-	      null, array(
-              	    'data_class' => 'AppBundle\Entity\Prestito',
-        	    'constraints' => array(new Assert\Callback('validateCollocazione'))
-              )
-        );
-	$form = $form->add('protocollo', TextType::class);
-	$form = $form->add('titolo1', TextType::class);
-	$form = $form->add('titolo2', TextType::class);
-	$form = $form->add('collocazione', TextType::class);
-	$form = $form->add('note', TextType::class, array(
-    	      	    'required'    => false,
-		    // 'placeholder' => '',
-    		    'empty_data'  => null
-		    ));
 	$form = $form->add('richiestaProroga', TextType::class, array(
     	      	    'required'    => false,
 		    // 'placeholder' => '',
     		    'empty_data'  => null
 		    ));
-	$form = $form->getForm();
+        $form = $form->getForm();
 	$form->handleRequest($request);
 
 	if ($form->isSubmitted() && $form->isValid()) {
@@ -335,17 +275,20 @@ class DefaultController extends Controller
 	    $prestito->setCollocazione($data->getCollocazione());
 	    $prestito->setNote($data->getNote());
 	    $prestito->setRichiestaProroga($data->getRichiestaProroga());
+
 	    $em = $this->getDoctrine()->getManager();
 	    $em->persist($prestito);
 	    $em->flush();
-	    // vai alla pagina "mostra prestiti in corso"
-	    return $this->redirectToRoute('mostraprestitoincorso');
+	    return $this->redirectToRoute('mostraprestito',
+					  array('option' => 'INCORSO'));
 	}
 
         return $this->render('default/editprestito.html.twig', array(
             'form' => $form->createView(),
-            'prestito' => $prestito,
-        ));
+	    'utente' => $utente,
+	    'prestito' => $prestito,
+	    'isNuovoPrestito' => $isNuovoPrestito,
+	    ));
     }
 
 

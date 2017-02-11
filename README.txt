@@ -3,8 +3,7 @@ Progetto IRMA
 https://github.com/giammy/irma
 
 
-TODO
-
+TODO 
 - gestire logout???
 - schermata utente - bottone mostra tutti i prestiti dell'utente
 

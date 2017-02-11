@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<center>
+  <h2>Statistiche e utilit&agrave; </h2>
+    <a href="{{ path('mostrautenti', {'option': 'CONEXPORT'}) }}" class="button" style="width:42%">Lista utenti</a>
+  <br>
+    <a href="{{ path('mostraprestito', {'option': 'CONEXPORT'}) }}" class="button" style="width:42%">Tutti prestiti</a>
+  <br>
+    <a href="{{ path('editutente') }}" class="button" style="width:42%">Nuovo utente</a>
+</center>
+
+{% endblock %}

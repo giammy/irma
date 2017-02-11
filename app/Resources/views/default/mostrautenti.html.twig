@@ -4,14 +4,22 @@
 
 <center>
 <table>
-<tr>
-<td width="70%">
-<b><h2>
-Cerca l'utente destinatario del prestito usando la casella CERCA a destra, e clicca sul nome.
-<br>
-Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
-</h2></b>
-</td>
+  <tr>
+{% if isPerUtility %}
+    <td width="30%">
+      <a href="{{ path('esportalistautenti') }}" class="button" style="width:100%">Esporta lista utenti</a>
+    </td>
+    <td width="30%"></td>
+{% else %}
+    <td width="70%">
+      <b><h2>
+	  Cerca l'utente destinatario del prestito usando la casella CERCA a destra, e clicca sul bottone "PRESTA".
+	  <br>
+	  Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
+      </h2></b>
+    </td>
+{% endif %}
+
 <td width="30%">
 <a href="{{ path('editutente') }}" class="button" style="width:100%">Crea nuovo utente</a>
 </td>
@@ -24,6 +32,9 @@ Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
 <table id="tabellautenti">
   <thead>
     <tr>
+      {# % if isPerPrestito % #}
+      <td></td>
+      {# % endif % #}
       <td>Cognome</td>
       <td>Nome</td>
       <td>Email</td>
@@ -44,6 +55,9 @@ Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
   <tbody>
     {% for utente in utenti %}
     <tr>
+      {# % if isPerPrestito % #}
+      <td><a href="{{ path('editprestito', {'id': 'x', 'username': utente.username }) }}" class="button">Presta</a></td>
+      {# % endif % #}
       <td> <a href =" {{ path('editutente', {'username': utente.username }) }} "> {{ utente.cognome }} </a> </td>
       <td><a href =" {{ path('editutente', {'username': utente.username }) }} "> {{ utente.nome }} </a></td>
       <td> {{ utente.email }} </td>
@@ -63,8 +77,5 @@ Se l'utente non c'e' creane uno di nuovo con il bottone qui a fianco.
     {% endfor %}
   </tbody>
 </table>
-
-
-<a href="{{ path('esportalistautenti') }}" class="button" style="width:100%">Esporta lista utenti</a>
 
 {% endblock %}

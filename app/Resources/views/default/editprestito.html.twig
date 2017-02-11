@@ -2,37 +2,75 @@
 
 {% block body %}
 
+{% if isNuovoPrestito %}
+  Prestito per l'utente {{utente.nome}} {{utente.cognome}}
+{% else %}
   <a href="{{ path('prestitorestituito', {'id': prestito.id}) }}" class="button" style="width:46%">RESTITUITO</a> 
 
   <a href="{{ path('prestitoprolungato', {'id': prestito.id}) }}" class="button" style="width:46%">RINNOVA</a> 
-
+{% endif %}
 
 {{ form_start(form) }}
 
 <table>
   <tr>
     <td> Protocollo: </td>
-    <td> {{ form_widget(attribute(form, "protocollo"), { 'value': prestito.protocollo, 'attr': {'size': '60'} }) }} </td>  </tr>
+    <!-- 'value': prestito.protocollo,  -->
+    <td> {% if isNuovoPrestito %}
+    {{ form_widget(attribute(form, "protocollo"), { 'attr': {'size': '60'} }) }}
+    {% else %}
+    {{ form_widget(attribute(form, "protocollo"), { 'value': prestito.protocollo, 'attr': {'size': '60'} }) }}
+    {% endif %} </td>
+  </tr>
   <tr>
     <td> Titolo1: </td>
-    <td>{{ form_widget(attribute(form, "titolo1"), { 'value': prestito.titolo1, 'attr': {'size': '60'} }) }} </td>
+    <td>
+    {% if isNuovoPrestito %}
+    {{ form_widget(attribute(form, "titolo1"), { 'attr': {'size': '60'} }) }}
+    {% else %}
+    {{ form_widget(attribute(form, "titolo1"), { 'value': prestito.titolo1, 'attr': {'size': '60'} }) }} {%endif %}
+    </td>
   </tr>
   <tr>
     <td> Titolo2: </td>
-    <td>{{ form_widget(attribute(form, "titolo2"), { 'value': prestito.titolo2, 'attr': {'size': '60'} }) }} </td>
+    <td>
+      {% if isNuovoPrestito %}
+      {{ form_widget(attribute(form, "titolo2"), { 'attr': {'size': '60'} }) }}
+      {% else %}
+      {{ form_widget(attribute(form, "titolo2"), { 'value': prestito.titolo2, 'attr': {'size': '60'} }) }}
+      {% endif %} </td>
+    </td>
   </tr>
   <tr>
     <td> Collocazione: </td>
-    <td>{{ form_widget(attribute(form, "collocazione"), { 'value': prestito.collocazione, 'attr': {'size': '60'} }) }}  </td>
+    <td>
+      {% if isNuovoPrestito %}
+      {{ form_widget(attribute(form, "collocazione"), { 'attr': {'size': '60'} }) }}
+      {% else %}
+      {{ form_widget(attribute(form, "collocazione"), { 'value': prestito.collocazione, 'attr': {'size': '60'} }) }}
+      {% endif %}
+    </td>
     <td> <b>{{ form_errors(form.collocazione) }}</b> </td>
   </tr>
   <tr>
     <td> Note: </td>
-    <td>{{ form_widget(attribute(form, "note"), { 'value': prestito.note, 'attr': {'size': '60'} }) }} </td>
+    <td>
+      {% if isNuovoPrestito %}
+      {{ form_widget(attribute(form, "note"), { 'attr': {'size': '60'} }) }}
+      {% else %}
+      {{ form_widget(attribute(form, "note"), { 'value': prestito.note, 'attr': {'size': '60'} }) }}
+      {% endif %}
+    </td>
   </tr>
   <tr>
     <td> Proroga: </td>
-    <td>{{ form_widget(attribute(form, "richiestaProroga"), { 'value': prestito.richiestaProroga, 'attr': {'size': '60'} }) }} </td>
+    <td>
+      {% if isNuovoPrestito %}
+      {{ form_widget(attribute(form, "richiestaProroga"), { 'attr': {'size': '60'} }) }}
+      {% else %}
+      {{ form_widget(attribute(form, "richiestaProroga"), { 'value': prestito.richiestaProroga, 'attr': {'size': '60'} }) }}
+      {% endif %}
+    </td>
   </tr>
 
 </table>
