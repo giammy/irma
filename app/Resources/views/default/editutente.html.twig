@@ -3,7 +3,7 @@
 {% block body %}
 
 {% if utente.username is not null %}
-<a href="{{ path('nuovoprestitoautente', {'username': utente.username }) }}" class="button" style="width:90%">
+<a href="{{ path('editprestito', {'id': 'x', 'username': utente.username }) }}" class="button" style="width:90%">
   NUOVO PRESTITO A QUESTO UTENTE</a> 
 {% endif %}
 
