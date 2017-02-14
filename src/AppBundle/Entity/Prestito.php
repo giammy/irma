@@ -17,22 +17,43 @@ use Symfony\Component\Validator\ExecutionContextInterface;
  */
 class Prestito
 {
-     public function validateCollocazione(ExecutionContextInterface $context)
-     {
-         // check constraints FORMATO "DON.F.924"
-	 $collocazione = $this->getCollocazione();
-
+     public function isCollocazioneValida($collocazione) {
 	 if (strlen($collocazione)!=9 or
 	     !ctype_alpha(substr($collocazione, 0, 3)) or
 	     $collocazione[3]!='.' or
 	     !ctype_alpha(substr($collocazione, 4, 1)) or
 	     $collocazione[5]!='.' or
 	     !ctype_digit(substr($collocazione, 6, 3)) ) {
+	         return true;
+	 } else {
+	     return false;
+	 }
+     }
+
+     public function validateCollocazione1(ExecutionContextInterface $context)
+     {
+         // check constraints FORMATO "DON.F.924"
+	 $collocazione1 = $this->getCollocazione1();
+	 if ($this->isCollocazioneValida($collocazione1)) {
              $context->buildViolation('La collocazione deve essere nel formato DON.F.924')
-                ->atPath('collocazione')
+                ->atPath('collocazione1')
                 ->addViolation();
 	 }
      }
+
+     public function validateCollocazione2(ExecutionContextInterface $context)
+     {
+	 $titolo2 = $this->getTitolo2();
+	 $collocazione2 = $this->getCollocazione2();
+	 if (!is_null($titolo2)) {
+	     if ($this->isCollocazioneValida($collocazione2)) {
+                 $context->buildViolation('La collocazione deve essere nel formato DON.F.924')
+                     ->atPath('collocazione2')
+                     ->addViolation();
+	     }
+        }
+     }
+
 
     /**
      * @var int
@@ -60,16 +81,24 @@ class Prestito
     /**
      * @var string
      *
-     * @ORM\Column(name="titolo2", type="string", length=255)
+     * @ORM\Column(name="titolo2", type="string", length=255, nullable=true)
      */
     private $titolo2;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="collocazione", type="string", length=255)
+     * @ORM\Column(name="collocazione1", type="string", length=255)
      */
-    private $collocazione;
+    private $collocazione1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="collocazione2", type="string", length=255, nullable=true)
+     */
+    private $collocazione2;
+
 
     /**
      * @var \DateTime
@@ -198,29 +227,6 @@ class Prestito
     public function getTitolo2()
     {
         return $this->titolo2;
-    }
-
-    /**
-     * Set collocazione
-     *
-     * @param string $collocazione
-     * @return Prestito
-     */
-    public function setCollocazione($collocazione)
-    {
-        $this->collocazione = $collocazione;
-
-        return $this;
-    }
-
-    /**
-     * Get collocazione
-     *
-     * @return string 
-     */
-    public function getCollocazione()
-    {
-        return $this->collocazione;
     }
 
     /**
@@ -382,5 +388,51 @@ class Prestito
     public function getUtente()
     {
         return $this->utente;
+    }
+
+    /**
+     * Set collocazione1
+     *
+     * @param string $collocazione1
+     * @return Prestito
+     */
+    public function setCollocazione1($collocazione1)
+    {
+        $this->collocazione1 = $collocazione1;
+
+        return $this;
+    }
+
+    /**
+     * Get collocazione1
+     *
+     * @return string 
+     */
+    public function getCollocazione1()
+    {
+        return $this->collocazione1;
+    }
+
+    /**
+     * Set collocazione2
+     *
+     * @param string $collocazione2
+     * @return Prestito
+     */
+    public function setCollocazione2($collocazione2)
+    {
+        $this->collocazione2 = $collocazione2;
+
+        return $this;
+    }
+
+    /**
+     * Get collocazione2
+     *
+     * @return string 
+     */
+    public function getCollocazione2()
+    {
+        return $this->collocazione2;
     }
 }

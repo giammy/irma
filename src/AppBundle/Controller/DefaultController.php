@@ -154,13 +154,23 @@ class DefaultController extends Controller
         $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
         $prestiti = $repo->findAll();
 
-	if ($option === "INCORSO") {
+	if (strpos($option, 'CONEXPORT') !== false) {
+	    $isUtility = true;
+        } else {
+	    $isUtility = false;
+	}
+
+	if (strpos($option, 'INCORSO') !== false) {
 	    $prestiti = array_filter($prestiti, function($p){ return is_null($p->getDataRestituzione());});
+	}
+
+	if (strpos($option, 'RESTITUITO') !== false) {
+	    $prestiti = array_filter($prestiti, function($p){ return (!is_null($p->getDataRestituzione()));});
 	}
 
         return $this->render('default/mostraprestito.html.twig', array(
             'prestiti' => $prestiti,
-	    'isUtility' => $option==="CONEXPORT"?true:false,
+	    'isUtility' => $isUtility,
         ));
     }
 
@@ -245,15 +255,25 @@ class DefaultController extends Controller
 	$form = $this->createFormBuilder(
 	      null, array(
               	    'data_class' => 'AppBundle\Entity\Prestito',
-        	    'constraints' => array(new Assert\Callback('validateCollocazione'))
+        	    'constraints' => array(new Assert\Callback('validateCollocazione1'),
+		    		           new Assert\Callback('validateCollocazione2'))
               )
         );
 	$form = $form->add('protocollo', TextType::class
 	      	    //, array('data'  => "pippo",)
 		    );
 	$form = $form->add('titolo1', TextType::class);
-	$form = $form->add('titolo2', TextType::class);
-	$form = $form->add('collocazione', TextType::class);
+	$form = $form->add('collocazione1', TextType::class);
+	$form = $form->add('titolo2', TextType::class, array(
+    	      	    'required'    => false,
+		    // 'placeholder' => '',
+    		    'empty_data'  => null
+		    ));
+	$form = $form->add('collocazione2', TextType::class, array(
+    	      	    'required'    => false,
+		    // 'placeholder' => '',
+    		    'empty_data'  => null
+		    ));
 	$form = $form->add('note', TextType::class, array(
     	      	    'required'    => false,
 		    // 'placeholder' => '',
@@ -271,8 +291,9 @@ class DefaultController extends Controller
 	    $data = $form->getData();
 	    $prestito->setProtocollo($data->getProtocollo());
 	    $prestito->setTitolo1($data->getTitolo1());
+	    $prestito->setCollocazione1($data->getCollocazione1());
 	    $prestito->setTitolo2($data->getTitolo2());
-	    $prestito->setCollocazione($data->getCollocazione());
+	    $prestito->setCollocazione2($data->getCollocazione2());
 	    $prestito->setNote($data->getNote());
 	    $prestito->setRichiestaProroga($data->getRichiestaProroga());
 
@@ -329,13 +350,14 @@ class DefaultController extends Controller
         $repo = $this->getDoctrine()->getrepository('AppBundle:Prestito');
         $prestiti = $repo->findAll();
 
-        $content = "protocollo,titolo1,titolo2,collocazione,dataPrestito,dataRestituzione,richiestaProroga,bibliotecarioPresito,bibliotecarioRestituzione,note,utente\n";
+        $content = "protocollo,titolo1,collocazione1,titolo2,collocazione2,dataPrestito,dataRestituzione,richiestaProroga,bibliotecarioPresito,bibliotecarioRestituzione,note,utente\n";
 	foreach($prestiti as $u) {	
 	    $dataRestituzione = is_null($u->getDataRestituzione())?"":$u->getDataRestituzione()->format('Y-m-dTH:i:s');
 	    $content = $content . $u->getProtocollo() . ","; 
 	    $content = $content . $u->getTitolo1() . ","; 
+	    $content = $content . $u->getCollocazione1() . ","; 
 	    $content = $content . $u->getTitolo2() . ","; 
-	    $content = $content . $u->getCollocazione() . ","; 
+	    $content = $content . $u->getCollocazione2() . ","; 
 	    $content = $content . $u->getDataPrestito()->format('Y-m-dTH:i:s') . ","; 
 	    $content = $content . $dataRestituzione . ","; 
 	    $content = $content . $u->getRichiestaProroga() . ","; 

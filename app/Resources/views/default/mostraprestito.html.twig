@@ -13,8 +13,9 @@ Elenco prestiti.
       <td></td>
       <td>Protocollo</td>
       <td>Titolo1</td>
+      <td>Collocazione1</td>
       <td>Titolo2</td>
-      <td>Collocazione</td>
+      <td>Collocazione2</td>
       <td>Data Prestito</td>
       <td>Data Restituzione</td>
       <td>Richiesta Proroga</td>
@@ -30,8 +31,9 @@ Elenco prestiti.
       <td><a href="{{ path('prestitoprolungato', {'id': prestito.id}) }}" class="button" onclick='return confirm("Sei sicuro di voler rinnovare il prestito?")'>RINNOVA</a></td>
       <td> <a href ="{{ path('editprestito', {'id': prestito.id, 'username': prestito.utente }) }}"> {{ prestito.protocollo }} </a> </td>
       <td> {{ prestito.titolo1 }} </td>
+      <td> {{ prestito.collocazione1 }} </td>
       <td> {{ prestito.titolo2 }} </td>
-      <td> {{ prestito.collocazione }} </td>
+      <td> {{ prestito.collocazione2 }} </td>
       <td> {{ prestito.dataPrestito|date('d/m/Y') }} </td>
       <td> {% if prestito.dataRestituzione %} {{ prestito.dataRestituzione|date('d/m/Y') }} {% endif %} </td>
       <td> {{ prestito.richiestaProroga }} </td>

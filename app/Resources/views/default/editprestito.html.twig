@@ -32,6 +32,17 @@
     </td>
   </tr>
   <tr>
+    <td> Collocazione1: </td>
+    <td>
+      {% if isNuovoPrestito %}
+      {{ form_widget(attribute(form, "collocazione1"), { 'attr': {'size': '60'} }) }}
+      {% else %}
+      {{ form_widget(attribute(form, "collocazione1"), { 'value': prestito.collocazione1, 'attr': {'size': '60'} }) }}
+      {% endif %}
+    </td>
+    <td> <b>{{ form_errors(form.collocazione1) }}</b> </td>
+  </tr>
+  <tr>
     <td> Titolo2: </td>
     <td>
       {% if isNuovoPrestito %}
@@ -42,15 +53,15 @@
     </td>
   </tr>
   <tr>
-    <td> Collocazione: </td>
+    <td> Collocazione2: </td>
     <td>
       {% if isNuovoPrestito %}
-      {{ form_widget(attribute(form, "collocazione"), { 'attr': {'size': '60'} }) }}
+      {{ form_widget(attribute(form, "collocazione2"), { 'attr': {'size': '60'} }) }}
       {% else %}
-      {{ form_widget(attribute(form, "collocazione"), { 'value': prestito.collocazione, 'attr': {'size': '60'} }) }}
+      {{ form_widget(attribute(form, "collocazione2"), { 'value': prestito.collocazione2, 'attr': {'size': '60'} }) }}
       {% endif %}
     </td>
-    <td> <b>{{ form_errors(form.collocazione) }}</b> </td>
+    <td> <b>{{ form_errors(form.collocazione2) }}</b> </td>
   </tr>
   <tr>
     <td> Note: </td>
